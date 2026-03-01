@@ -63,8 +63,42 @@ Create an API key under **Account > Manage Account > API Keys** in BTCPay Server
 | `GET` | `.../events/{eventId}/tickets/export` | Export tickets CSV |
 | `POST` | `.../events/{eventId}/tickets/{ticketNumber}/check-in` | Check-in ticket |
 | **Orders** | | |
+| `POST` | `.../events/{eventId}/purchase` | Create ticket purchase (returns order + checkout URL) |
 | `GET` | `.../events/{eventId}/orders` | List settled orders |
 | `POST` | `.../events/{eventId}/orders/{orderId}/tickets/{ticketId}/send-reminder` | Re-send ticket email |
+
+## Purchase Flow (API)
+
+Use `POST .../events/{eventId}/purchase` to create ticket orders programmatically (e.g. from WooCommerce or other e-commerce integrations):
+
+**Request:**
+```json
+{
+  "tickets": [
+    {
+      "ticketTypeId": "uuid-ticket-type",
+      "quantity": 2,
+      "recipients": [
+        { "firstName": "Jano", "lastName": "Novak", "email": "jano@example.com" },
+        { "firstName": "Maria", "lastName": "Novakova", "email": "maria@example.com" }
+      ]
+    }
+  ],
+  "redirectUrl": "https://example.com/thank-you"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "orderId": "uuid",
+  "txnId": "string",
+  "invoiceId": "btcpay-invoice-id",
+  "checkoutUrl": "https://btcpay.example.com/i/{invoiceId}"
+}
+```
+
+**Validation:** Event must be active and in the future; ticket types must exist and have sufficient quantity; `recipients.length` must equal `quantity` for each ticket type.
 
 ## Typical Workflow
 
@@ -73,5 +107,6 @@ Create an API key under **Account > Manage Account > API Keys** in BTCPay Server
 3. **Create ticket types** — `POST .../events/{id}/ticket-types`
 4. **Activate event** — `PUT .../events/{id}/toggle`
 5. **Monitor sales** — `GET .../events/{id}/tickets` or `.../orders`
-6. **Check-in** — `POST .../events/{id}/tickets/{ticketNumber}/check-in`
-7. **Export report** — `GET .../events/{id}/tickets/export`
+6. **Create purchase via API** (optional) — `POST .../events/{id}/purchase` — for external integrations
+7. **Check-in** — `POST .../events/{id}/tickets/{ticketNumber}/check-in`
+8. **Export report** — `GET .../events/{id}/tickets/export`
