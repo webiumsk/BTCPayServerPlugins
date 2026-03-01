@@ -1,4 +1,4 @@
-﻿# Satoshi Tickets 
+# Satoshi Tickets 
 
 ## Event Ticketing and Management System using Bitcoin via BTCPay Server
 
@@ -94,6 +94,24 @@ Congratulations, everything is set up and ticket purchasing is working.
 
    ![Ticket list, checking in](./img/SatoshiTickets/ticket_checkin_2.png)   
 
+
+## Building from source
+
+To create an installable `.btcpay` plugin package:
+
+**Linux/macOS:**
+```bash
+./build-plugin.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+.\build-plugin.ps1
+```
+
+**Requirements:** .NET 8 SDK
+
+The output will be in `dist/BTCPayServer.Plugins.SatoshiTickets/{version}/BTCPayServer.Plugins.SatoshiTickets.btcpay`. Upload this file via **BTCPay Server > Settings > Plugins** to install.
 
 ## Contribute
 
