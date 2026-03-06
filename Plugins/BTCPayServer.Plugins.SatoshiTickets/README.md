@@ -1,4 +1,4 @@
-# Satoshi Tickets 
+﻿# Satoshi Tickets 
 
 ## Event Ticketing and Management System using Bitcoin via BTCPay Server
 
@@ -95,23 +95,29 @@ Congratulations, everything is set up and ticket purchasing is working.
    ![Ticket list, checking in](./img/SatoshiTickets/ticket_checkin_2.png)   
 
 
-## Building from source
+## API Documentation
 
-To create an installable `.btcpay` plugin package:
+Satoshi tickets plugin API now available. See documentation at:
 
-**Linux/macOS:**
-```bash
-./build-plugin.sh
+```
+{btcpay_server_url}/plugins/{storeId}/satoshi-tickets/api-docs
+
 ```
 
-**Windows (PowerShell):**
-```powershell
-.\build-plugin.ps1
+All endpoints require a BTCPay Server Greenfield API key passed in the `Authorization` header.
+
+```
+Authorization: token YOUR_API_KEY
 ```
 
-**Requirements:** .NET 8 SDK
+**Required permissions:**
 
-The output will be in `dist/BTCPayServer.Plugins.SatoshiTickets/{version}/BTCPayServer.Plugins.SatoshiTickets.btcpay`. Upload this file via **BTCPay Server > Settings > Plugins** to install.
+- `btcpay.store.canviewstoresettings` - for all GET (read) endpoints
+- `btcpay.store.canmodifystoresettings` - for all POST, PUT, DELETE (write) endpoints
+
+To create an API key: BTCPay Server > Account > Manage Account > API Keys > Generate Key. Select at minimum the permissions `CanViewStoreSettings` and `CanModifyStoreSettings` for the target store.
+
+
 
 ## Contribute
 
